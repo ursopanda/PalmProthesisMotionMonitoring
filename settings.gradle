@@ -1,1 +1,1 @@
-include ':app', ':smartwear-processing-lib'
+include ':app', ':smartwear-processing-lib', ':bluetooth-lib'
