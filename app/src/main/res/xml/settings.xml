@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <EditTextPreference
+    <Preference
+        android:id="@+id/set_bt_target"
         android:key="pref_bt_target"
         android:title="@string/pref_title_bt_target"
         android:summary="@string/pref_summary_bt_target"
-        android:defaultValue="none"></EditTextPreference>
+        android:defaultValue="none"></Preference>
 
 </PreferenceScreen>

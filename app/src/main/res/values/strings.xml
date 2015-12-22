@@ -2,7 +2,9 @@
     <string name="app_name">Palm Prothesis Motion Monitoring</string>
     <string name="action_settings">Settings</string>
     <string name="pref_title_bt_target">Bluetooth target device name</string>
-    <string name="pref_summary_bt_target">Sets the bluetooth target device</string>
+    <string name="pref_summary_bt_target">Set Bluetooth device</string>
     <string name="settings">Settings</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_bt_support">Device does not support bluetooth</string>
+    <string name="bt_must_be_turned_on">Bluetooth must be turned on to use this applicaion</string>
 </resources>
