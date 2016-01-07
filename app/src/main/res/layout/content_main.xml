@@ -20,5 +20,4 @@
             android:textOn="@string/processing_on"
             android:textOff="@string/processing_off"></ToggleButton>
     </LinearLayout>
-
 </RelativeLayout>
