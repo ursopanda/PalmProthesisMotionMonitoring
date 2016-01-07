@@ -16,6 +16,7 @@ import lv.edi.BluetoothLib.*;
 
 /**
  * Created by Richards on 21.12.2015..
+ * Class representing settings screen for bluetooth etc. configuration
  */
 public class SettingsActivity extends AppCompatActivity {
     private static Preference btPreference;

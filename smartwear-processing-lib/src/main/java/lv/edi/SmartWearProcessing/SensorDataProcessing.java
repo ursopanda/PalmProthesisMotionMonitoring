@@ -680,6 +680,71 @@ public class SensorDataProcessing {
 		}
 		return result;
 	}
+
+	/**
+	 * Function for rotation matrix estimation with TRIAD algorithm, that aligns
+	 * sensor local reference frame to global reference frame.
+	 * @param acc_data0 - accelerometer data array of size 3 with normalised accelerometer data reference state
+	 * @param magn_data0  - magnetometer data array of size 3 with normalised magnetometer data reference state
+	 * @param acc_data - accelerometer data array of size 3 with normalised accelerometer data
+	 * @param magn_data  - magnetometer data array of size 3 with normalised magnetometer data
+	 * @return float[][] - result array  of size [3][3] must be initialised before function call
+	*  @throws IllegalArgumentException - thrwos if vectors not 3 dimensional*/
+
+	public static float[][] getRotationTRIAD(float [] acc_data0, float[] magn_data0, float[] acc_data, float[] magn_data){
+		if((acc_data0.length !=3) || (magn_data0.length !=3)||(acc_data.length !=3 )||(magn_data.length !=3)){
+			throw(new IllegalArgumentException("All vectors must be 3 dimensional"));
+		}
+
+		float[][] result = new float[3][3];
+//		float[] magn_data={1, 0, 0};
+		if(acc_data.length==3 && magn_data.length==3){
+
+			float[] s2 = new float[3];
+			crossProduct(acc_data0, magn_data0, s2);
+			normalizeVector(s2);
+			float[] s3 = new float[3];
+			crossProduct(acc_data0, s2, s3);
+
+			float[] r2 = new float[3];
+			crossProduct(acc_data, magn_data, r2);
+			normalizeVector(r2);
+			float[] r3 = new float[3];
+			crossProduct(acc_data, r2, r3);
+
+			float[][] Mmeas = new float[3][3];
+			float[][] Mref = new float[3][3];
+
+			// filling Mmeas and Mref matrices
+			for(int i=0; i<Mmeas.length; i++){
+				Mmeas[i][0]=acc_data[i];
+				Mmeas[i][1]=r2[i];
+				Mmeas[i][2]=r3[i];
+
+				Mref[i][0]=acc_data0[i];
+				Mref[i][1]=s2[i];
+				Mref[i][2]=s3[i];
+			}
+			result = multMatMatT(Mref, Mmeas);
+		}
+		return result;
+	}
+
+	/**
+	 * Function returns rotation angle in radians from rotation matrix
+	 * @param R float[][] 3x3 matrix representing rotation matrix
+	 * @return float angle in radians of rotation matrix angle=acos((trace(R)-1)/2)
+	 * @throws IllegalArgumentException if roation matrix is not 3x3
+	 */
+	public static float angleFromR(float [][] R){
+		if((R.length !=3) || (R[0].length!=3)){
+			throw(new IllegalArgumentException("rotation matrix must be 3x3"));
+		}
+		float angle=0.0f;
+		float trace = R[0][0]+R[1][1]+R[2][2];
+		angle = (float)Math.acos((trace-1)/2);
+		return angle;
+	}
 	
 	public static void transpose(float[][] mat){
 		float[][] res = new float[mat.length][mat[0].length];

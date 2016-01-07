@@ -189,6 +189,10 @@ public class Sensor {
 		return rawMagData[1];
 	}
 	/**
+	 * returns
+	 */
+
+	/**
 	 * returns raw Z axis value of magnetometer
 	 * @return rawMagData[2]
 	 */

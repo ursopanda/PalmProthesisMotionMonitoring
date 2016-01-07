@@ -46,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
             application.btService = new BluetoothService(application.sensors, application.BATTERY_PACKET);
             application.btService.registerBluetoothEventListener(application);
         }
+
+        if(application.processingService==null){
+            application.processingService = new ProcessingService(application.sensors);
+        }
     }
 
     @Override
@@ -152,8 +156,9 @@ public class MainActivity extends AppCompatActivity {
                 startProcessingButton.setChecked(false);
                 return;
             }
+            application.processingService.startProcessing(100);
         } else{
-
+            application.processingService.stopProcessing();
         }
 
     }

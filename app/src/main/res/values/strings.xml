@@ -11,4 +11,5 @@
     <string name="must_connect_bt">Connect to bluetooth device first!</string>
     <string name="processing_on">Stop</string>
     <string name="processing_off">Start</string>
+    <string name="angle_label">Angle [deg]</string>
 </resources>
