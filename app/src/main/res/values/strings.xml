@@ -8,4 +8,7 @@
     <string name="no_bt_support">Device does not support bluetooth</string>
     <string name="bt_must_be_turned_on">Bluetooth must be turned on to use this applicaion</string>
     <string name="must_select_bt_device">Bluetooth target device must be set in settings!</string>
+    <string name="must_connect_bt">Connect to bluetooth device first!</string>
+    <string name="processing_on">Stop</string>
+    <string name="processing_off">Start</string>
 </resources>
