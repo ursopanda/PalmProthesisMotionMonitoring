@@ -32,5 +32,6 @@
     <orderEntry type="library" exported="" name="EJML-simple-0.28" level="project" />
     <orderEntry type="library" exported="" name="EJML-core-0.28" level="project" />
     <orderEntry type="library" exported="" name="EJML-equation-0.28" level="project" />
+    <orderEntry type="library" exported="" name="smartwear-processing-lib.smartwear-processing-lib" level="project" />
   </component>
 </module>
