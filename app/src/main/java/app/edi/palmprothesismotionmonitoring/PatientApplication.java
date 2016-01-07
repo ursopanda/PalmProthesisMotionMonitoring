@@ -48,7 +48,9 @@ public class PatientApplication extends Application implements SharedPreferences
         for(int i=0; i<NUM_SENSORS; i++){
             sensors.add(new Sensor(i, true));
         }
-        Log.d("APPLICATION", "bt device " + btDevice.getName());
+        if(btDevice!=null){
+            Log.d("APPLICATION", "bt device " + btDevice.getName());
+        }
     }
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key){
