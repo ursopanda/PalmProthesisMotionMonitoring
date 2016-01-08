@@ -49,9 +49,12 @@ public class ProcessingService {
                 float[] magn0 = sensors.get(0).getMagNorm();
                 float[] magn = sensors.get(1).getMagNorm();
 
-                float[][] R = new float[3][3];
+                Log.d("PROCESSING_SERVICE", " " + acc0[0] + " " + acc0[1] + " " + acc[2]);
 
-                SensorDataProcessing.getRotationTRIAD(acc0, magn0, acc, magn);
+                float[][] R = SensorDataProcessing.getRotationTRIAD(acc0, magn0, acc, magn);
+
+                Log.d("PROCESSING_SERVICE", "R(1,:)="+R[0][0]+" "+R[0][1]+" "+R[0][2]);
+
                 float angle = SensorDataProcessing.angleFromR(R);
 
                 Log.d("PROCESSING_SERVICE", "ANGLE "+Math.toDegrees(angle));
