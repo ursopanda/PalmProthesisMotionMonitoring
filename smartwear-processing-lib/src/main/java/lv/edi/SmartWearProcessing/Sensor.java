@@ -493,6 +493,45 @@ public class Sensor {
 		}
 	}
 
+	/**Sets magnetometer calibration data for sensors stored in Vector<Sensor>
+	 * @param calibDataFile - File object representing calibration data in csv format
+	 * @param sensors - Vector<Sensors> where sensor objects are allocated for data storage
+	 * @throws IOException - thrown if problem with calibration file
+	 * @throws IllegalArgumentException - thrown when sensor vector size doesn't match calib file.
+	 */
+	public static void setMagnetometerCalibData(File calibDataFile, Vector<Sensor> sensors)throws IOException, IllegalArgumentException{
+		BufferedReader breader = new BufferedReader(new FileReader(calibDataFile));
+		String str = breader.readLine();
+		int numberOfSensors;
+		try {
+			numberOfSensors = Integer.parseInt(str);
+		} catch (NumberFormatException e) {
+			breader.close();
+			return;
+		}
+
+		if(numberOfSensors==sensors.size()){
+			for(int i=0; i<numberOfSensors; i++){
+				str=breader.readLine();
+				String[] elements = str.split(",");
+				if(elements.length==12){
+					float[] calibData = new float[12];
+					for(int j=0; j<12; j++){
+						calibData[j]=(float)Double.parseDouble(elements[j]);
+					}
+					sensors.get(i).updateMagnCalibrationData(calibData);
+				}else{
+					breader.close();
+					throw new IOException();
+				}
+			}
+			breader.close();
+		}else{
+			breader.close();
+			throw new IllegalArgumentException("Vector<Sensor> must have the same number of sensors as specified in calibration file");
+
+		}
+	}
 	/**
 	 * Sets magnetometer calibration data for all GRID
 	 * @param calibDataFile .csv file containing calibration data

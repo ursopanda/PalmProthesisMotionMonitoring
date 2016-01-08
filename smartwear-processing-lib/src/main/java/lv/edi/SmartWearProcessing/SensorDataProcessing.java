@@ -226,8 +226,8 @@ public class SensorDataProcessing {
 		float deltaZ_s=0; // temporary deltaZ squared
 		for(int i=0; i<sizeRows;i++){
 			for(int j=0; j<sizeColumns;j++){
-			    deltaY_s=(float)pow(state1[i][j][1]-state2[i][j][1],2);
-			    deltaZ_s=(float)pow(state1[i][j][2]-state2[i][j][2],2);
+			    deltaY_s=(float)pow(state1[i][j][1] - state2[i][j][1], 2);
+			    deltaZ_s=(float)pow(state1[i][j][2] - state2[i][j][2], 2);
 			    distance=(float)(distance+sqrt(deltaY_s+deltaZ_s));
 			}
 		}
@@ -744,6 +744,24 @@ public class SensorDataProcessing {
 		float trace = R[0][0]+R[1][1]+R[2][2];
 		angle = (float)Math.acos((trace-1)/2);
 		return angle;
+	}
+
+	/**
+	 * Returns rotation axis for axis angle rotation representation from rotation matrix, the vector
+	 * is not normalised
+	 * @param R float[][] 3x3 array containing rotation matrix
+	 * @return float[] 3 element vector containing rotation axis
+	 * @throws IllegalArgumentException when rotation matrix is not 3x3
+	 */
+	public static float[] axisFromR(float[][] R) throws IllegalArgumentException{
+		if((R.length !=3) || (R[0].length!=3)){
+			throw(new IllegalArgumentException("rotation matrix must be 3x3"));
+		}
+		float[] axis = new float[3];
+		axis[0]=R[2][1]-R[1][2];
+		axis[1]=R[0][2]-R[2][0];
+		axis[2]=R[1][0]-R[0][1];
+		return axis;
 	}
 	
 	public static void transpose(float[][] mat){

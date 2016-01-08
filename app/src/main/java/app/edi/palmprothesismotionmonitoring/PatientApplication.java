@@ -4,10 +4,13 @@ import android.app.Application;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.SharedPreferences;
+import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Vector;
 
 import lv.edi.BluetoothLib.BluetoothEventListener;
@@ -31,9 +34,35 @@ public class PatientApplication extends Application implements SharedPreferences
     static final int BATTERY_PACKET=4;
     MainActivity mainActivity;
     Handler uiHandler;
+
+    private File extStorageDirectory;
+    private File appDirectory;
+    private File calibrationFile;
+    private String appDirName="PalmProsthesis";
+    private String calibrationDataFileName="calibration_data.csv";
+
+
     @Override
     public void onCreate(){
         super.onCreate();
+
+        // manage files
+        extStorageDirectory = Environment.getExternalStorageDirectory();
+        appDirectory = new File(extStorageDirectory, appDirName);
+        if(!appDirectory.exists()){
+            appDirectory.mkdir();
+        }
+
+        File[] files = appDirectory.listFiles();
+        for(File i : files){
+            Log.d("APPLICATION", "list of files in folder: "+i);
+        }
+        calibrationFile = new File(appDirectory, calibrationDataFileName);
+        Log.d("APPLICATION", "calibration file "+calibrationFile);
+
+        Log.d("APPLICATION", "external storage directory "+appDirectory);
+        Log.d("APPLICATION", "app folder "+ appDirectory);
+        Log.d("APPLICATION", "app folder exists?"+appDirectory.exists());
 
         btAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -52,6 +81,18 @@ public class PatientApplication extends Application implements SharedPreferences
         for(int i=0; i<NUM_SENSORS; i++){
             sensors.add(new Sensor(i, true));
             sensors.get(i).setMountTransformMatrix(1, 2, 3, 1, 2, 3);
+        }
+
+        if(calibrationFile.exists()){
+
+            try {
+                Sensor.setMagnetometerCalibData(calibrationFile, sensors);
+                Log.d("APPLICATION", "calibration data loaded");
+            } catch(IllegalArgumentException ex){
+                Log.e("APPLICATION", ""+ex.getStackTrace());
+            } catch(IOException ex){
+                Log.e("APPLICATION", ""+ex.getStackTrace());
+            }
         }
         if(btDevice!=null){
             Log.d("APPLICATION", "bt device " + btDevice.getName());

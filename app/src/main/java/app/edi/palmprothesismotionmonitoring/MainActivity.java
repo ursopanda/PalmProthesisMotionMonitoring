@@ -13,21 +13,25 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import lv.edi.BluetoothLib.BluetoothService;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ProcessingServiceEventListener{
     private PatientApplication application;
     private final int REQUEST_ENABLE_BT = 1;
     private MenuItem btConnect;
     private ToggleButton startProcessingButton;
+    private TextView angleView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        angleView = (TextView) findViewById(R.id.angle_view);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         startProcessingButton = (ToggleButton)findViewById(R.id.button_start);
         setSupportActionBar(toolbar);
@@ -50,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         if(application.processingService==null){
             application.processingService = new ProcessingService(application.sensors);
         }
+
+        application.processingService.registerProcessingServiceEventListener(this);
     }
 
     @Override
@@ -161,5 +167,15 @@ public class MainActivity extends AppCompatActivity {
             application.processingService.stopProcessing();
         }
 
+    }
+
+    @Override
+    public void onProcessingResult(float angle){
+        final float anglef = angle;
+        runOnUiThread(new Runnable(){
+            public void run(){
+                angleView.setText(""+anglef);
+            }
+        });
     }
 }
