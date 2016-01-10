@@ -3,10 +3,6 @@ package app.edi.palmprothesismotionmonitoring;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -24,13 +20,13 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
     private final int REQUEST_ENABLE_BT = 1;
     private MenuItem btConnect;
     private ToggleButton startProcessingButton;
-    private TextView angleView;
+    private TextView amplitudeValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        angleView = (TextView) findViewById(R.id.angle_view);
+        amplitudeValue = (TextView) findViewById(R.id.amplitudeValue);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         startProcessingButton = (ToggleButton)findViewById(R.id.button_start);
@@ -174,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
         final float anglef = angle;
         runOnUiThread(new Runnable(){
             public void run(){
-                angleView.setText(""+anglef);
+                amplitudeValue.setText("" + anglef);
             }
         });
     }
