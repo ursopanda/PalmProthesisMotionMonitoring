@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -20,13 +21,13 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
     private final int REQUEST_ENABLE_BT = 1;
     private MenuItem btConnect;
     private ToggleButton startProcessingButton;
-    private TextView amplitudeValue;
+    private ProgressBar flexionValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //amplitudeValue = (TextView) findViewById(R.id.amplitudeValue);
+        flexionValue = (ProgressBar) findViewById(R.id.flexionValue);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         startProcessingButton = (ToggleButton)findViewById(R.id.button_start);
@@ -170,7 +171,8 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
         final float anglef = angle;
         runOnUiThread(new Runnable(){
             public void run(){
-                amplitudeValue.setText("" + anglef);
+                int progress = (int)(100*anglef/90);
+                flexionValue.setProgress(progress);
             }
         });
     }

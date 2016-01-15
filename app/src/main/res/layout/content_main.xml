@@ -217,7 +217,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:id="@+id/flexionValue"
-                    android:progress="50"
+                    android:progress="0"
                     android:layout_gravity="center"/> />
             </LinearLayout>
         </LinearLayout>
