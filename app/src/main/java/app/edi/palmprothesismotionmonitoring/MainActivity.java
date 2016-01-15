@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        amplitudeValue = (TextView) findViewById(R.id.amplitudeValue);
+        //amplitudeValue = (TextView) findViewById(R.id.amplitudeValue);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         startProcessingButton = (ToggleButton)findViewById(R.id.button_start);
