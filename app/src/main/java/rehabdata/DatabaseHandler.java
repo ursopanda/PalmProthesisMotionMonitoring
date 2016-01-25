@@ -87,6 +87,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 Timestamp.valueOf(cursor.getString(2)), Integer.valueOf(cursor.getString(3)),
                 Double.parseDouble(cursor.getString(4)), Double.parseDouble(cursor.getString(5)));
 
+        cursor.close();
+
         return rehabSession;
     }
 
@@ -116,16 +118,37 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         // return rehab session List
+        cursor.close();
+
         return rehabSessionList;
     }
 
     // Getting rehabSession amount
-//    public int getRehabSessionCount() {}
+    public int getRehabSessionCount() {
+        String countQuery = "SELECT * FROM " + TABLE_REHAB_SESSION;
+        SQLiteDatabase db= this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        cursor.close();
+
+        return cursor.getCount();
+    }
 
     // Updating single rehabSession
 //    public int updateRehabSession(RehabSession rehabSession) {}
 
     // Deleting single rehabSession
-    public void deleteRehabSession(RehabSession rehabSession) {}
+    public void deleteRehabSession(RehabSession rehabSession) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        db.delete(TABLE_REHAB_SESSION, KEY_ID + " = ?",
+                new String[] { String.valueOf(rehabSession.get_id()) });
+        db.close();
+    }
+
+    // Deleting DB
+    public void deleteRehabStats() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_REHAB_SESSION, null, null);
+        db.close();
+    }
 }
