@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import org.w3c.dom.Text;
+
 import lv.edi.BluetoothLib.BluetoothService;
 
 public class MainActivity extends AppCompatActivity implements ProcessingServiceEventListener{
@@ -52,6 +54,22 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
         }
 
         application.processingService.registerProcessingServiceEventListener(this);
+
+        // Working with fields about required Rehab Session values
+        TextView requiredLength = (TextView) findViewById(R.id.requiredSessionLength);
+        TextView requiredMovementAmount = (TextView) findViewById(R.id.requiredMovementAmount);
+        TextView requiredAmpitudeValue = (TextView) findViewById(R.id.requiredAmplitudeValue);
+
+//        TODO setText from the DB Table "PatientData"
+        requiredLength.setText("5");
+        requiredMovementAmount.setText("20");
+        requiredAmpitudeValue.setText("70");
+
+        // Fields about current statistics
+        TextView sessionTime = (TextView) findViewById(R.id.sessionTime);
+        TextView movementAmount = (TextView) findViewById(R.id.movementAmount);
+        TextView amplitudeValue = (TextView) findViewById(R.id.amplitudeValue);
+
     }
 
     @Override
@@ -157,8 +175,12 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
                 Toast.makeText(this, getString(R.string.must_connect_bt), Toast.LENGTH_SHORT).show();
                 startProcessingButton.setChecked(false);
                 return;
+            } else {
+                application.processingService.startProcessing(100);
+
+                // TODO Starting Timer of Rehabilitation
+
             }
-            application.processingService.startProcessing(100);
         } else{
             application.processingService.stopProcessing();
         }
