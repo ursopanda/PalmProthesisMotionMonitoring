@@ -12,4 +12,8 @@
     <string name="processing_on">Stop</string>
     <string name="processing_off">Start</string>
     <string name="angle_label">Angle [deg]</string>
+
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

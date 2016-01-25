@@ -1,6 +1,6 @@
 package rehabdata;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.sql.Time;
 
 /**

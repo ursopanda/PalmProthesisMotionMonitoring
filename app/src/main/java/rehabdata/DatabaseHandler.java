@@ -6,7 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Created by esyundyukov on 18/01/16.
@@ -79,14 +83,41 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         // TODO: Deal with object initialization: cast data types correctly
-        RehabSession rehabSession = new RehabSession(); // = new RehabSession(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
+        RehabSession rehabSession = new RehabSession(Integer.parseInt(cursor.getString(0)), Timestamp.valueOf(cursor.getString(1)),
+                Timestamp.valueOf(cursor.getString(2)), Integer.valueOf(cursor.getString(3)),
+                Double.parseDouble(cursor.getString(4)), Double.parseDouble(cursor.getString(5)));
 
         return rehabSession;
     }
 
-//    public List<RehabSession> getAllRehabSessions() {
-//        return rehabSessionList;
-//    }
+    public List<RehabSession> getAllRehabSessions() {
+
+        List<RehabSession> rehabSessionList = new ArrayList<RehabSession>();
+
+        // Select All Query
+        String selectQuery = "SELECT * FROM " + TABLE_REHAB_SESSION;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all table rows and adding them to list
+        if (cursor.moveToFirst()) {
+            do {
+                RehabSession rehabSession = new RehabSession();
+                rehabSession.set_id(Integer.parseInt(cursor.getString(0)));
+                rehabSession.set_startTime(Timestamp.valueOf(cursor.getString(1)));
+                rehabSession.set_endTime(Timestamp.valueOf(cursor.getString(2)));
+                rehabSession.set_movementAmount(Integer.parseInt(cursor.getString(3)));
+                rehabSession.set_movementAmplitude(Double.parseDouble(cursor.getString(4)));
+                rehabSession.set_avgFrequency(Double.parseDouble(cursor.getString(5)));
+
+                // Adding rehabsession instance data to List
+                rehabSessionList.add(rehabSession);
+            } while (cursor.moveToNext());
+        }
+        // return rehab session List
+        return rehabSessionList;
+    }
 
     // Getting rehabSession amount
 //    public int getRehabSessionCount() {}
