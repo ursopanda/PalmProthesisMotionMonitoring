@@ -186,12 +186,14 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
         } else {
             application.processingService.stopProcessing();
 
+            // Starting timer for rehab session length
             sessionTimer = SystemClock.uptimeMillis();
             handler.postDelayed(updateTimer, 0);
         }
 
     }
 
+    // Updatinng timer value
     public Runnable updateTimer = new Runnable() {
         @Override
         public void run() {
