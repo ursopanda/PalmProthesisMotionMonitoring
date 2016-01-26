@@ -13,6 +13,7 @@ public class RehabSession {
     Timestamp _startTime;
     Timestamp _endTime;
     int _movementAmount;
+    // TODO This will be maximum Ampitude Value
     double _movementAmplitude;
     double _avgFrequency;
 
