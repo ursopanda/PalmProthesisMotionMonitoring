@@ -2,7 +2,9 @@ package app.edi.palmprothesismotionmonitoring;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,8 +14,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-
-import org.w3c.dom.Text;
+import android.os.Handler;
 
 import lv.edi.BluetoothLib.BluetoothService;
 
@@ -22,7 +23,9 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
     private final int REQUEST_ENABLE_BT = 1;
     private MenuItem btConnect;
     private ToggleButton startProcessingButton;
-    private TextView amplitudeValue;
+    private TextView amplitudeValue, sessionTime, movementAmount;
+    private long sessionTimer, timeInMilliSeconds = 0L;
+    Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
         // Fields about current statistics
         TextView sessionTime = (TextView) findViewById(R.id.sessionTime);
         TextView movementAmount = (TextView) findViewById(R.id.movementAmount);
-        TextView amplitudeValue = (TextView) findViewById(R.id.amplitudeValue);
 
     }
 
@@ -181,11 +183,27 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
                 // TODO Starting Timer of Rehabilitation
 
             }
-        } else{
+        } else {
             application.processingService.stopProcessing();
+
+            sessionTimer = SystemClock.uptimeMillis();
+            handler.postDelayed(updateTimer, 0);
         }
 
     }
+
+    public Runnable updateTimer = new Runnable() {
+        @Override
+        public void run() {
+            timeInMilliSeconds = SystemClock.uptimeMillis() - sessionTimer;
+            sessionTime.setText("" + ((int) (timeInMilliSeconds / 1000))/60 + ":" +
+                    String.format("%02d", (int) (timeInMilliSeconds / 1000)) + ":"
+                    + String.format("%03d", (int) (timeInMilliSeconds % 1000)));
+
+            sessionTime.setTextColor(Color.RED);
+            handler.postDelayed(this, 0);
+        }
+    };
 
     @Override
     public void onProcessingResult(float angle){
