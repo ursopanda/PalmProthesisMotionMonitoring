@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
 
         // Fields about current statistics
         TextView sessionTime = (TextView) findViewById(R.id.sessionTime);
+        Log.d("MAIN_ACTIVITY", "sessionTime view"+ sessionTime);
         TextView movementAmount = (TextView) findViewById(R.id.movementAmount);
 
     }
@@ -192,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
 
             // Starting timer for rehab session length
             sessionTimer = SystemClock.uptimeMillis();
-            handler.postDelayed(updateTimer, 0);
+            //handler.postDelayed(updateTimer, 0); CURRENTLY produces EXCEPTION. RUNNABLE DOESN'T get valu of sessionTime view
         }
 
     }
@@ -202,6 +203,7 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
         @Override
         public void run() {
             timeInMilliSeconds = SystemClock.uptimeMillis() - sessionTimer;
+            Log.e("MAIN_ACTIVITY", "sessionTIme "+sessionTime);
             sessionTime.setText("" + ((int) (timeInMilliSeconds / 1000))/60 + ":" +
                     String.format("%02d", (int) (timeInMilliSeconds / 1000)) + ":"
                     + String.format("%03d", (int) (timeInMilliSeconds % 1000)));
