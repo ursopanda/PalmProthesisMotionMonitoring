@@ -2,7 +2,9 @@ package app.edi.palmprothesismotionmonitoring;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+import android.os.Handler;
 
 import lv.edi.BluetoothLib.BluetoothService;
 
@@ -21,7 +24,12 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
     private final int REQUEST_ENABLE_BT = 1;
     private MenuItem btConnect;
     private ToggleButton startProcessingButton;
+
     private ProgressBar flexionValue;
+    private TextView amplitudeValue, sessionTime, movementAmount;
+    private long sessionTimer, timeInMilliSeconds = 0L;
+    Handler handler = new Handler();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +61,21 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
         }
 
         application.processingService.registerProcessingServiceEventListener(this);
+
+        // Working with fields about required Rehab Session values
+        TextView requiredLength = (TextView) findViewById(R.id.requiredSessionLength);
+        TextView requiredMovementAmount = (TextView) findViewById(R.id.requiredMovementAmount);
+        TextView requiredAmpitudeValue = (TextView) findViewById(R.id.requiredAmplitudeValue);
+
+//        TODO setText from the DB Table "PatientData"
+        requiredLength.setText("5");
+        requiredMovementAmount.setText("20");
+        requiredAmpitudeValue.setText("70");
+
+        // Fields about current statistics
+        TextView sessionTime = (TextView) findViewById(R.id.sessionTime);
+        TextView movementAmount = (TextView) findViewById(R.id.movementAmount);
+
     }
 
     @Override
@@ -158,13 +181,35 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
                 Toast.makeText(this, getString(R.string.must_connect_bt), Toast.LENGTH_SHORT).show();
                 startProcessingButton.setChecked(false);
                 return;
+            } else {
+                application.processingService.startProcessing(100);
+
+                // TODO Starting Timer of Rehabilitation
+
             }
-            application.processingService.startProcessing(100);
-        } else{
+        } else {
             application.processingService.stopProcessing();
+
+            // Starting timer for rehab session length
+            sessionTimer = SystemClock.uptimeMillis();
+            handler.postDelayed(updateTimer, 0);
         }
 
     }
+
+    // Updatinng timer value
+    public Runnable updateTimer = new Runnable() {
+        @Override
+        public void run() {
+            timeInMilliSeconds = SystemClock.uptimeMillis() - sessionTimer;
+            sessionTime.setText("" + ((int) (timeInMilliSeconds / 1000))/60 + ":" +
+                    String.format("%02d", (int) (timeInMilliSeconds / 1000)) + ":"
+                    + String.format("%03d", (int) (timeInMilliSeconds % 1000)));
+
+            sessionTime.setTextColor(Color.RED);
+            handler.postDelayed(this, 0);
+        }
+    };
 
     @Override
     public void onProcessingResult(float angle){
