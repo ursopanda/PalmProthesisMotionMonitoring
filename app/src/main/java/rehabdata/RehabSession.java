@@ -14,28 +14,28 @@ public class RehabSession {
     Timestamp _endTime;
     int _movementAmount;
     // TODO This will be maximum Ampitude Value
-    double _movementAmplitude;
+    double _maxMovementAmplitude;
     double _avgFrequency;
 
     // Defining constructors
     public RehabSession() {}
 
     public RehabSession(int _id, Timestamp _startTime, Timestamp _endTime,
-                        int _movementAmount, double _movementAmplitude, double _avgFrequency) {
+                        int _movementAmount, double _maxMovementAmplitude, double _avgFrequency) {
         this._id = _id;
         this._startTime = _startTime;
         this._endTime = _endTime;
         this._movementAmount = _movementAmount;
-        this._movementAmplitude = _movementAmplitude;
+        this._maxMovementAmplitude = _maxMovementAmplitude;
         this._avgFrequency = _avgFrequency;
     }
 
     public RehabSession(Timestamp _startTime, Timestamp _endTime,
-                        int _movementAmount, double _movementAmplitude, double _avgFrequency) {
+                        int _movementAmount, double _maxMovementAmplitude, double _avgFrequency) {
         this._startTime = _startTime;
         this._endTime = _endTime;
         this._movementAmount = _movementAmount;
-        this._movementAmplitude = _movementAmplitude;
+        this._maxMovementAmplitude = _maxMovementAmplitude;
         this._avgFrequency = _avgFrequency;
     }
 
@@ -71,12 +71,12 @@ public class RehabSession {
         this._movementAmount = _movementAmount;
     }
 
-    public double get_movementAmplitude() {
-        return _movementAmplitude;
+    public double get_maxMovementAmplitude() {
+        return _maxMovementAmplitude;
     }
 
-    public void set_movementAmplitude(double _movementAmplitude) {
-        this._movementAmplitude = _movementAmplitude;
+    public void set_maxMovementAmplitude(double _maxMovementAmplitude) {
+        this._maxMovementAmplitude = _maxMovementAmplitude;
     }
 
     public double get_avgFrequency() {
