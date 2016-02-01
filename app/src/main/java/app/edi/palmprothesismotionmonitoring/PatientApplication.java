@@ -30,7 +30,7 @@ public class PatientApplication extends Application implements SharedPreferences
     BluetoothService btService;
     ProcessingService processingService;
     Vector<Sensor> sensors = new Vector<Sensor>();
-    static final int NUM_SENSORS=4;
+    static final int NUM_SENSORS=2;
     static final int BATTERY_PACKET=4;
     MainActivity mainActivity;
     Handler uiHandler;

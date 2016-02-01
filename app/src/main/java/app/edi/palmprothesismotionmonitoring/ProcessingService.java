@@ -28,6 +28,17 @@ public class ProcessingService {
 
     private float currentAngle;         // computed angle in degrees
     Vector<ProcessingServiceEventListener> listeners = new Vector<ProcessingServiceEventListener>();
+
+    /**
+     *  Constructor specifying lower and upper angle thresholds for movement counting
+     *  @param sensors Vector containing Sensor objects on which to perform processing.
+     *  @
+     */
+    public ProcessingService(Vector<Sensor> sensors, float lowerThreshold, float upperThreshold){
+        this(sensors);
+        this.lowerThreshold = lowerThreshold;
+        this.upperThreshold = upperThreshold;
+    }
     /**
      * Constructor specifying allocated Sensor objects to use for processing
      * at the moment
@@ -53,9 +64,9 @@ public class ProcessingService {
         timer.scheduleAtFixedRate(new TimerTask(){
             public void run() {// fetch data
                 float[] acc0 = sensors.get(0).getAccNorm();
-                float[] acc = sensors.get(3).getAccNorm();
+                float[] acc = sensors.get(1).getAccNorm();
                 float[] magn0 = sensors.get(0).getMagNorm();
-                float[] magn = sensors.get(3).getMagNorm();
+                float[] magn = sensors.get(1).getMagNorm();
 
                 Log.d("PROCESSING_SERVICE", " " + acc0[0] + " " + acc0[1] + " " + acc[2]);
                 Log.d("PROCESSING_SERVICE ", "acc difference "+(acc0[0]-acc[0])+" "+(acc0[1]-acc[1])+" "+(acc0[2]-acc[2]));
