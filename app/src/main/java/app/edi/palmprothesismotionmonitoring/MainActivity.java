@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -23,15 +24,18 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
     private final int REQUEST_ENABLE_BT = 1;
     private MenuItem btConnect;
     private ToggleButton startProcessingButton;
+
+    private ProgressBar flexionValue;
     private TextView amplitudeValue, sessionTime, movementAmount;
     private long sessionTimer, timeInMilliSeconds = 0L;
     Handler handler = new Handler();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        amplitudeValue = (TextView) findViewById(R.id.amplitudeValue);
+        flexionValue = (ProgressBar) findViewById(R.id.flexionValue);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         startProcessingButton = (ToggleButton)findViewById(R.id.button_start);
@@ -70,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
 
         // Fields about current statistics
         TextView sessionTime = (TextView) findViewById(R.id.sessionTime);
+        Log.d("MAIN_ACTIVITY", "sessionTime view"+ sessionTime);
         TextView movementAmount = (TextView) findViewById(R.id.movementAmount);
 
     }
@@ -188,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
 
             // Starting timer for rehab session length
             sessionTimer = SystemClock.uptimeMillis();
-            handler.postDelayed(updateTimer, 0);
+            //handler.postDelayed(updateTimer, 0); CURRENTLY produces EXCEPTION. RUNNABLE DOESN'T get valu of sessionTime view
         }
 
     }
@@ -198,6 +203,7 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
         @Override
         public void run() {
             timeInMilliSeconds = SystemClock.uptimeMillis() - sessionTimer;
+            Log.e("MAIN_ACTIVITY", "sessionTIme "+sessionTime);
             sessionTime.setText("" + ((int) (timeInMilliSeconds / 1000))/60 + ":" +
                     String.format("%02d", (int) (timeInMilliSeconds / 1000)) + ":"
                     + String.format("%03d", (int) (timeInMilliSeconds % 1000)));
@@ -212,7 +218,8 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
         final float anglef = angle;
         runOnUiThread(new Runnable(){
             public void run(){
-                amplitudeValue.setText("" + anglef);
+                int progress = (int)(100*anglef/90);
+                flexionValue.setProgress(progress);
             }
         });
     }

@@ -46,39 +46,18 @@ public class ProcessingService {
         timer.scheduleAtFixedRate(new TimerTask(){
             public void run() {// fetch data
                 float[] acc0 = sensors.get(0).getAccNorm();
-                float[] acc = sensors.get(1).getAccNorm();
+                float[] acc = sensors.get(3).getAccNorm();
                 float[] magn0 = sensors.get(0).getMagNorm();
-                float[] magn = sensors.get(1).getMagNorm();
+                float[] magn = sensors.get(3).getMagNorm();
 
                 Log.d("PROCESSING_SERVICE", " " + acc0[0] + " " + acc0[1] + " " + acc[2]);
-
+                Log.d("PROCESSING_SERVICE ", "acc difference "+(acc0[0]-acc[0])+" "+(acc0[1]-acc[1])+" "+(acc0[2]-acc[2]));
+                Log.d("PROCESSING_SERVICE", "magn difference "+(magn0[0]-magn[0])+" "+(magn0[1]-magn[1])+" "+(magn0[2]-magn[2]));
                 float[][] R = SensorDataProcessing.getRotationTRIAD(acc0, magn0, acc, magn);
-
-                Log.d("PROCESSING_SERVICE", "R(1,:)="+R[0][0]+" "+R[0][1]+" "+R[0][2]);
-
-                float angle = SensorDataProcessing.angleFromR(R);
-                float[] axis = SensorDataProcessing.axisFromR(R);
-                Log.d("PROCESSING_SERVICE", "axis "+axis[0]+" "+axis[1]+" "+axis[2]);
-                SensorDataProcessing.normalizeVector(axis);
-                float projZ = SensorDataProcessing.dotProduct(axis, Z);// rotation axis projection on Z axis used to determine angle sign of rotation
-
-                if(projZ>0.1){      // ignoring rotation not around sensor Z axis and determining sign
-                    projZ=1;
-                } else{
-                    if(projZ<-0.1){
-                        projZ=-1;
-                    } else{
-                        projZ=0;
-                    }
-                }
-
-
-                Log.d("PROCESSING_SERVICE", "Z size "+axis.length+" axis size: "+axis.length);
-                Log.d("PROCESSING_SERVICE", "rotation axis projection: "+projZ);
-
-                Log.d("PROCESSING_SERVICE", "ANGLE "+Math.toDegrees(angle));
+                float angle = (float) Math.atan2(R[1][0], R[0][0]);
+                Log.d("PROCESSING_SERVICE", "computed angle:  "+angle);
                 for(ProcessingServiceEventListener i : listeners){
-                    i.onProcessingResult((float)Math.toDegrees(projZ*angle));
+                    i.onProcessingResult((float)Math.toDegrees(angle));
                 }
             }
                 } ,0 , period);
