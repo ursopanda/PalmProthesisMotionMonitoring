@@ -26,6 +26,9 @@ public class ProcessingService {
     private int movementCounts=0;
     private boolean goingUp=true;           // shows if direction of movement (increasing angle)
 
+
+    private long sessionStartTime;
+    private long sessionLength;
     private long previousTime;           // for time measurements between movements
     private long currentTime;
 
@@ -65,7 +68,8 @@ public class ProcessingService {
     public void startProcessing(long period){
         timer = new Timer();
         periods = new Vector<Long>();
-        previousTime = System.currentTimeMillis();
+        sessionStartTime=System.currentTimeMillis();
+        previousTime = sessionStartTime;
         timer.scheduleAtFixedRate(new TimerTask(){
             public void run() {// fetch data
                 float[] acc0 = sensors.get(0).getAccNorm();
@@ -79,10 +83,11 @@ public class ProcessingService {
                 float[][] R = SensorDataProcessing.getRotationTRIAD(acc0, magn0, acc, magn);
                 currentAngle = (float)Math.toDegrees(Math.atan2(R[1][0], R[0][0]));
                 Log.d("PROCESSING_SERVICE", "computed angle:  "+currentAngle);
-
+                currentTime=System.currentTimeMillis();
+                sessionLength=currentTime-sessionStartTime;
+                Log.d("PROCESSING_SERVICE_TIME", "session length "+sessionLength+" [ms]");
                 if(goingUp){
                     if(currentAngle>=upperThreshold){
-                        currentTime = System.currentTimeMillis();
                         periods.add(currentTime-previousTime);
                         previousTime=currentTime;
                         movementCounts++;
@@ -134,6 +139,14 @@ public class ProcessingService {
      */
     public void registerProcessingServiceEventListener(ProcessingServiceEventListener listener){
         this.listeners.add(listener);
+    }
+
+    /**
+     * return length in milliseconds of current running processing session
+     * @return long sessionLength in milliseconds.
+     */
+    public long getSessionLength(){
+        return this.sessionLength;
     }
 }
 
