@@ -20,6 +20,13 @@ public class ProcessingService {
     private boolean isProcessing = false;
     private Timer timer;
     private final float[] Z ={0, 0, 1};
+
+    private float lowerThreshold=40;       // lower threshold for movement counting
+    private float upperThreshold=70;       // upper threshold for movement counting
+    private int movementCounts=0;
+    private boolean goingUp=true;           // shows if direction of movement (increasing angle)
+
+    private float currentAngle;         // computed angle in degrees
     Vector<ProcessingServiceEventListener> listeners = new Vector<ProcessingServiceEventListener>();
     /**
      * Constructor specifying allocated Sensor objects to use for processing
@@ -54,10 +61,26 @@ public class ProcessingService {
                 Log.d("PROCESSING_SERVICE ", "acc difference "+(acc0[0]-acc[0])+" "+(acc0[1]-acc[1])+" "+(acc0[2]-acc[2]));
                 Log.d("PROCESSING_SERVICE", "magn difference "+(magn0[0]-magn[0])+" "+(magn0[1]-magn[1])+" "+(magn0[2]-magn[2]));
                 float[][] R = SensorDataProcessing.getRotationTRIAD(acc0, magn0, acc, magn);
-                float angle = (float) Math.atan2(R[1][0], R[0][0]);
-                Log.d("PROCESSING_SERVICE", "computed angle:  "+angle);
+                currentAngle = (float)Math.toDegrees(Math.atan2(R[1][0], R[0][0]));
+                Log.d("PROCESSING_SERVICE", "computed angle:  "+currentAngle);
+
+                if(goingUp){
+                    if(currentAngle>upperThreshold){
+                        movementCounts++;
+                        Log.d("PROC_MOVEMENT", "Movement detected. Nr of movements: "+movementCounts);
+                        for(ProcessingServiceEventListener i : listeners){
+                            i.onMovementCount(movementCounts);
+                        }
+                        goingUp=false;
+                    }
+                } else{
+                    if(currentAngle<=lowerThreshold){
+                        goingUp=true;
+                    }
+                }
+
                 for(ProcessingServiceEventListener i : listeners){
-                    i.onProcessingResult((float)Math.toDegrees(angle));
+                    i.onProcessingResult(currentAngle);
                 }
             }
                 } ,0 , period);
@@ -92,4 +115,5 @@ public class ProcessingService {
  */
 interface ProcessingServiceEventListener{
     void onProcessingResult(float processingResult);
+    void onMovementCount(int movementCount);
 }

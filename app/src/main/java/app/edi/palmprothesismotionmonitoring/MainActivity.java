@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
         // Fields about current statistics
         TextView sessionTime = (TextView) findViewById(R.id.sessionTime);
         Log.d("MAIN_ACTIVITY", "sessionTime view"+ sessionTime);
-        TextView movementAmount = (TextView) findViewById(R.id.movementAmount);
+        movementAmount = (TextView) findViewById(R.id.movementAmount);
 
     }
 
@@ -220,6 +220,17 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
             public void run(){
                 int progress = (int)(100*anglef/90);
                 flexionValue.setProgress(progress);
+            }
+        });
+    }
+
+    @Override
+    public void onMovementCount(int count){
+        final int countf = count;
+        runOnUiThread(new Runnable(){
+            public void run(){
+                Log.d("MAIN_ACTIVITY", "movement count view "+movementAmount);
+                movementAmount.setText(""+countf);
             }
         });
     }
