@@ -26,7 +26,11 @@ public class ProcessingService {
     private int movementCounts=0;
     private boolean goingUp=true;           // shows if direction of movement (increasing angle)
 
+    private long previousTime;           // for time measurements between movements
+    private long currentTime;
+
     private float currentAngle;         // computed angle in degrees
+    private Vector<Long> periods;       // periods between movements in milliseconds
     Vector<ProcessingServiceEventListener> listeners = new Vector<ProcessingServiceEventListener>();
 
     /**
@@ -60,7 +64,8 @@ public class ProcessingService {
      */
     public void startProcessing(long period){
         timer = new Timer();
-
+        periods = new Vector<Long>();
+        previousTime = System.currentTimeMillis();
         timer.scheduleAtFixedRate(new TimerTask(){
             public void run() {// fetch data
                 float[] acc0 = sensors.get(0).getAccNorm();
@@ -76,8 +81,12 @@ public class ProcessingService {
                 Log.d("PROCESSING_SERVICE", "computed angle:  "+currentAngle);
 
                 if(goingUp){
-                    if(currentAngle>upperThreshold){
+                    if(currentAngle>=upperThreshold){
+                        currentTime = System.currentTimeMillis();
+                        periods.add(currentTime-previousTime);
+                        previousTime=currentTime;
                         movementCounts++;
+
                         Log.d("PROC_MOVEMENT", "Movement detected. Nr of movements: "+movementCounts);
                         for(ProcessingServiceEventListener i : listeners){
                             i.onMovementCount(movementCounts);
@@ -107,6 +116,13 @@ public class ProcessingService {
         timer.cancel();
         timer=null;
         isProcessing = false;
+
+        // average movement periods
+        long sum=0;
+        for(Long i : periods){
+            sum+=i.longValue();
+        }
+        Log.d("PROCESSING_SERVICE", "average periods: "+((float)sum)/periods.size()+" [ms]");
     }
     public boolean isProcessing(){
         return isProcessing;
