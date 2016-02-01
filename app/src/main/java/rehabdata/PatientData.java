@@ -11,12 +11,11 @@ public class PatientData {
     String _surname;
     String _phoneNumber;
     String _diagnosis;
-
-    // This one will be gathered from Facebook APi
-//  String _username;
-//  String _password;
-//  String _email;
-//  String _sex;
+    // This one will be gathered from Facebook API
+    String _username;
+    String _password;
+    String _email;
+    String _sex;
 
     // Data related to rehab session
     String _definedMovementAmount;
