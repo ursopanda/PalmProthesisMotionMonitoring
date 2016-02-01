@@ -64,7 +64,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_START_TIME, rehabSession.get_startTime().toString());
         values.put(KEY_END_TIME, rehabSession.get_endTime().toString());
         values.put(KEY_MOVEMENT_AMOUNT, rehabSession.get_movementAmount());
-        values.put(KEY_MOVEMENT_AMPLITUDE, rehabSession.get_movementAmplitude());
+        values.put(KEY_MOVEMENT_AMPLITUDE, rehabSession.get_maxMovementAmplitude());
         values.put(KEY_AVG_FREQUENCY, rehabSession.get_avgFrequency());
 
         db.insert(TABLE_REHAB_SESSION, null, values);
@@ -109,7 +109,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 rehabSession.set_startTime(Timestamp.valueOf(cursor.getString(1)));
                 rehabSession.set_endTime(Timestamp.valueOf(cursor.getString(2)));
                 rehabSession.set_movementAmount(Integer.parseInt(cursor.getString(3)));
-                rehabSession.set_movementAmplitude(Double.parseDouble(cursor.getString(4)));
+                rehabSession.set_maxMovementAmplitude(Double.parseDouble(cursor.getString(4)));
                 rehabSession.set_avgFrequency(Double.parseDouble(cursor.getString(5)));
 
                 // Adding rehabsession instance data to List
