@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
     private ToggleButton startProcessingButton;
 
     private ProgressBar flexionValue;
+    private AngleView angleView;
     private TextView amplitudeValue, sessionTime, movementAmount;
     private long sessionTimer, timeInMilliSeconds = 0L;
     Handler handler = new Handler();
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         flexionValue = (ProgressBar) findViewById(R.id.flexionValue);
+        angleView = (AngleView) findViewById(R.id.angle_view);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         startProcessingButton = (ToggleButton)findViewById(R.id.button_start);
@@ -220,6 +222,8 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
             public void run(){
                 int progress = (int)(100*anglef/90);
                 flexionValue.setProgress(progress);
+                angleView.setCurrentAngle(anglef/90);
+                angleView.invalidate();
             }
         });
     }
