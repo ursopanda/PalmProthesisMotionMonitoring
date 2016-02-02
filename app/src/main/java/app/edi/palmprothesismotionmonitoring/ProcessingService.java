@@ -14,6 +14,11 @@ import lv.edi.SmartWearProcessing.SensorDataProcessing;
  *
  * class for background service for processing sensor data. Service computes sensor orientation
  * and provides with data like angle between sensors
+ *
+ * After processing service  session main metrics are obtained with methods:
+ *      getSessionLength()   -- session length in milliseconds
+ *      getMovementCount()   -- movement count for session
+ *      getAveragePeriod()   -- average period between two movements in milliseconds
  */
 public class ProcessingService {
     private Vector<Sensor> sensors;
@@ -70,6 +75,7 @@ public class ProcessingService {
         periods = new Vector<Long>();
         sessionStartTime=System.currentTimeMillis();
         previousTime = sessionStartTime;
+        movementCounts = 0;
         timer.scheduleAtFixedRate(new TimerTask(){
             public void run() {// fetch data
                 float[] acc0 = sensors.get(0).getAccNorm();
@@ -147,6 +153,22 @@ public class ProcessingService {
      */
     public long getSessionLength(){
         return this.sessionLength;
+    }
+
+    /**
+     * returns number of movements during processing session
+     * @return integer. number of times movements were detected
+     */
+    public int getMovementCount(){
+        return this.movementCounts;
+    }
+
+    /**
+     * returns average period between two movements in milliseconds
+     * @return average period between movements in milliseconds
+     */
+    public int getAveragePeriod(){
+        return (int)getSessionLength()/getMovementCount();
     }
 }
 

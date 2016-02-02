@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
                 int progress = (int)(100*anglef/90);
                 flexionValue.setProgress(progress);
                 long sessionTimeL=application.processingService.getSessionLength();
-                String time = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(sessionTimeL), TimeUnit.MILLISECONDS.toSeconds(sessionTimeL));
+                String time = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(sessionTimeL)%60, TimeUnit.MILLISECONDS.toSeconds(sessionTimeL)%60);
                 sessionTime.setText(time);
 
                 angleView.setCurrentAngle(anglef / 90);
