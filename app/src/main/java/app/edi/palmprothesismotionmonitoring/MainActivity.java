@@ -141,6 +141,13 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
             } else{
                 application.btService.disconnectDevice();
             }
+
+
+        }
+
+        if(id == R.id.action_calibrate){
+            Intent intent = new Intent(this, CalibrationActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
