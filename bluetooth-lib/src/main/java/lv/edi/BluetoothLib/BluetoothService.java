@@ -255,7 +255,7 @@ public class BluetoothService {
                                                             magz);// forming magnetometer z data from two recieved data bytes
 
                                                 }
-                                                Log.d("BLUETOOTH", "PACKET "+packet[0]+" "+accx+" "+accy+" "+accz);
+                                                Log.d("BLUETOOTH", "PACKET "+packet[0]+" "+accx+" "+accy+" "+accz+ " "+magx+" "+magy+" "+magz);
                                             }
 
                                             if(packet[0]==batteryPacketIndex) {// if received battery status packet
