@@ -28,6 +28,7 @@ public class AngleView extends View {
         framePaint.setStrokeWidth(3);
         framePaint.setStyle(Paint.Style.STROKE);
 
+
         fillPaint = new Paint();
         fillPaint.setColor(Color.RED);
         fillPaint.setStyle(Paint.Style.FILL);
@@ -66,6 +67,10 @@ public class AngleView extends View {
 
         int width = canvas.getWidth()-1;
         int height = canvas.getHeight()-1;
+
+        fillPaint.setColor(Color.BLUE);
+        canvas.drawRect(0, 0, width*currentAngle, height, fillPaint);
+
         if(currentAngle<lowerThreshFrac){
             fillPaint.setColor(Color.RED);
         } else{
@@ -75,7 +80,8 @@ public class AngleView extends View {
                 fillPaint.setColor(Color.GREEN);
             }
         }
-        canvas.drawRect(0, 0, width*currentAngle, height, fillPaint);
+        canvas.drawRect(width*currentAngle, 0, width*currentAngle+width/15, height, fillPaint);
+
         // draw low part
         canvas.drawRect(0, 0, width*lowerThreshFrac, height, framePaint);
         canvas.drawRect(width*lowerThreshFrac, 0, width*upperThreshFrac, height, framePaint);
