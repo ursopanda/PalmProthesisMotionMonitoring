@@ -6,11 +6,13 @@ import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 
 import org.ejml.data.DenseMatrix64F;
 
+import java.util.Iterator;
 import java.util.Vector;
 
 /**
@@ -21,7 +23,7 @@ public class CalibrationView extends View {
     private Paint framePaint;
     private Paint pointPaint;
     private Vector<DenseMatrix64F> data;
-    private float norm = 364;
+    private float norm = 600;
 
     public CalibrationView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -36,9 +38,21 @@ public class CalibrationView extends View {
         pointPaint.setColor(Color.BLUE);
         pointPaint.setStyle(Paint.Style.FILL);
 
-        data = new Vector<DenseMatrix64F>();
-        double[] dt = {0, 200, 0};
-        data.add(new DenseMatrix64F(1,3, true, dt));
+    }
+
+    /**
+     * sets calibration data for view to visualise
+     * @param data
+     */
+    public void setData(Vector<DenseMatrix64F> data){
+        this.data=data;
+    }
+
+    /**
+     * removes calibration data from view
+     */
+    public void removeData(){
+        this.data=null;
     }
 
     /**
@@ -57,11 +71,18 @@ public class CalibrationView extends View {
         int radius = Math.min(width, height)/2;
         canvas.drawCircle(width/2, height/2, radius, framePaint);
         if(data!=null){
-            for(DenseMatrix64F point : data){
-                float rawX = (float)point.get(0,0);
-                float rawY = (float)point.get(0,1);
 
-                canvas.drawCircle(offsetX+(rawX/norm)*radius, offsetY+(rawY/norm)*radius, 10, pointPaint);
+            DenseMatrix64F sensor1 = data.get(0);
+            for(int i=0; i<sensor1.numRows; i++) {
+
+
+                float rawX = (float) sensor1.get(i,0);
+                float rawY = (float) sensor1.get(i, 1);
+
+                Log.d("CALIBRATION", "raw x y:" + rawX + " " + rawY);
+                if(rawX!=0.0f && rawY!=0.0f)
+                    canvas.drawCircle(offsetX + (rawX / norm) * radius, offsetY + (rawY / norm) * radius, 10, pointPaint);
+
             }
         }
     }

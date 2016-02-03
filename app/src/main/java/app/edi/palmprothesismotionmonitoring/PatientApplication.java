@@ -37,7 +37,7 @@ public class PatientApplication extends Application implements SharedPreferences
 
     private File extStorageDirectory;
     private File appDirectory;
-    private File calibrationFile;
+    protected File calibrationFile;
     private String appDirName="PalmProsthesis";
     private String calibrationDataFileName="calibration_data.csv";
 
@@ -85,14 +85,7 @@ public class PatientApplication extends Application implements SharedPreferences
 
         if(calibrationFile.exists()){
 
-            try {
-                Sensor.setMagnetometerCalibData(calibrationFile, sensors);
-                Log.d("APPLICATION", "calibration data loaded");
-            } catch(IllegalArgumentException ex){
-                Log.e("APPLICATION", ""+ex.getStackTrace());
-            } catch(IOException ex){
-                Log.e("APPLICATION", ""+ex.getStackTrace());
-            }
+            updateCalibrationData(calibrationFile);
         }
         if(btDevice!=null){
             Log.d("APPLICATION", "bt device " + btDevice.getName());
@@ -125,6 +118,21 @@ public class PatientApplication extends Application implements SharedPreferences
     @Override
     public void onBluetoothDeviceDisconnected(){
         mainActivity.btDisconnected();
+    }
+
+    /**
+     * reloads sensor calibration data parameters
+     * @param calibData
+     */
+    public void updateCalibrationData(File calibData){
+        try {
+            Sensor.setMagnetometerCalibData(calibrationFile, sensors);
+            Log.d("APPLICATION", "calibration data loaded");
+        } catch(IllegalArgumentException ex){
+            Log.e("APPLICATION", ""+ex.getStackTrace());
+        } catch(IOException ex){
+            Log.e("APPLICATION", ""+ex.getStackTrace());
+        }
     }
 
 }
