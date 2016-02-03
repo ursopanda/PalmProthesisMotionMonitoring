@@ -20,7 +20,7 @@ import lv.edi.SmartWearProcessing.SensorDataProcessing;
  */
 public class CalibrationActivity extends AppCompatActivity {
     PatientApplication application;
-    private Vector<DenseMatrix64F> data;
+    private Vector<DenseMatrix64F> data; // data vector
     Timer dataAcquisitionTimer;
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
