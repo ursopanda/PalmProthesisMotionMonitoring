@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
                 startProcessingButton.setChecked(false);
                 return;
             } else {
-                application.processingService.startProcessing(100);
+                application.processingService.startProcessing(20);
 
                 // TODO Starting Timer of Rehabilitation
 

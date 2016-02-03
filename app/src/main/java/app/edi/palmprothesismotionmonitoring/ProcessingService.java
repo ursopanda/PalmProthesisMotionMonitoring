@@ -6,6 +6,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
+import lv.edi.SmartWearProcessing.Filter;
 import lv.edi.SmartWearProcessing.Sensor;
 import lv.edi.SmartWearProcessing.SensorDataProcessing;
 
@@ -39,6 +40,7 @@ public class ProcessingService {
 
     private float currentAngle;         // computed angle in degrees
     private Vector<Long> periods;       // periods between movements in milliseconds
+    private Filter filterAngle;
     Vector<ProcessingServiceEventListener> listeners = new Vector<ProcessingServiceEventListener>();
 
     /**
@@ -71,6 +73,7 @@ public class ProcessingService {
      * @param period processing period in milliseconds
      */
     public void startProcessing(long period){
+        filterAngle = new Filter();
         timer = new Timer();
         periods = new Vector<Long>();
         sessionStartTime=System.currentTimeMillis();
@@ -87,7 +90,7 @@ public class ProcessingService {
                 Log.d("PROCESSING_SERVICE ", "acc difference "+(acc0[0]-acc[0])+" "+(acc0[1]-acc[1])+" "+(acc0[2]-acc[2]));
                 Log.d("PROCESSING_SERVICE", "magn difference "+(magn0[0]-magn[0])+" "+(magn0[1]-magn[1])+" "+(magn0[2]-magn[2]));
                 float[][] R = SensorDataProcessing.getRotationTRIAD(acc0, magn0, acc, magn);
-                currentAngle = (float)Math.toDegrees(Math.atan2(R[1][0], R[0][0]));
+                currentAngle = filterAngle.filter((float)Math.toDegrees(Math.atan2(R[1][0], R[0][0])));
                 Log.d("PROCESSING_SERVICE", "computed angle:  "+currentAngle);
                 currentTime=System.currentTimeMillis();
                 sessionLength=currentTime-sessionStartTime;
