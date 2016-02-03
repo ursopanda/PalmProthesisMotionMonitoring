@@ -24,7 +24,7 @@ public class Calibration {
     private static EigenDecomposition<DenseMatrix64F> eig;
 
     /*
-    * This function initialized Calibration class. Must be called for funcionts - ellipsoidFitCalibration
+    * This function initialized Calibration class. Must be called for funcions - ellipsoidFitCalibration
     * to work
      */
     public static void init(){
@@ -219,7 +219,7 @@ public class Calibration {
 
     /**
      * Calibrates all sensors paced in data
-     * @param data [measrment index][sensor index][Floats of data]
+     * @param data [sensorIndex][measurement index][Floats of data]
      * @param offsets result offsets must be alloctated before hand
      * @param W_inverted result scaling must be allocated before hand
      */
