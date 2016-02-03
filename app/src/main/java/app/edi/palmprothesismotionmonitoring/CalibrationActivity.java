@@ -16,8 +16,6 @@ import java.util.TimerTask;
 import java.util.Vector;
 
 import lv.edi.SmartWearProcessing.Calibration;
-import lv.edi.SmartWearProcessing.Sensor;
-import lv.edi.SmartWearProcessing.SensorDataProcessing;
 
 /**
  * Created by richards on 16.2.2.
@@ -32,7 +30,7 @@ public class CalibrationActivity extends AppCompatActivity {
     private Vector<DenseMatrix64F> offsets;
     private Vector<DenseMatrix64F> W_inverted;
 
-    private int SAMPLES_COUNT = 500;        // how many samples to qcquire
+    private int SAMPLES_COUNT = 2500;        // how many samples to qcquire
     Timer dataAcquisitionTimer;
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -97,7 +95,7 @@ public class CalibrationActivity extends AppCompatActivity {
 
                         }
                         Log.d("CALIBRATION", "Sensor data frame added");
-                    }} ,0 , 100);
+                    }} ,0 , 20);
 
             } else {
                 Toast.makeText(this, "Connect to bt device first!", Toast.LENGTH_SHORT).show();
