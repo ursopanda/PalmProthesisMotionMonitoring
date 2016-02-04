@@ -20,6 +20,8 @@ import lv.edi.SmartWearProcessing.SensorDataProcessing;
  *      getSessionLength()   -- session length in milliseconds
  *      getMovementCount()   -- movement count for session
  *      getAveragePeriod()   -- average period between two movements in milliseconds
+ *      getMaxAngle()        -- max angle in session (this value may be large because of accelerometers errors due to movement)
+ *      getSessionStartTime() -- UTC start time of the session in [ms]
  */
 public class ProcessingService {
     private Vector<Sensor> sensors;
@@ -33,11 +35,12 @@ public class ProcessingService {
     private boolean goingUp=true;           // shows if direction of movement (increasing angle)
 
 
-    private long sessionStartTime;
-    private long sessionLength;
-    private long previousTime;           // for time measurements between movements
-    private long currentTime;
+    private long sessionStartTime;       // session start time in [ms] UTC
+    private long sessionLength;          // time elapsed since session start
+    private long previousTime;
+    private long currentTime;            // current elapsed time in [ms]
 
+    private float maxAngle = 0;         // maximum angle for seassion
     private float currentAngle;         // computed angle in degrees
     private Vector<Long> periods;       // periods between movements in milliseconds
     private Filter filterAngle;
@@ -90,7 +93,10 @@ public class ProcessingService {
                 Log.d("PROCESSING_SERVICE ", "acc difference "+(acc0[0]-acc[0])+" "+(acc0[1]-acc[1])+" "+(acc0[2]-acc[2]));
                 Log.d("PROCESSING_SERVICE", "magn difference "+(magn0[0]-magn[0])+" "+(magn0[1]-magn[1])+" "+(magn0[2]-magn[2]));
                 float[][] R = SensorDataProcessing.getRotationTRIAD(acc0, magn0, acc, magn);
+
                 currentAngle = filterAngle.filter((float)Math.toDegrees(Math.atan2(R[1][0], R[0][0])));
+                maxAngle = (currentAngle>maxAngle) ? currentAngle : maxAngle;
+
                 Log.d("PROCESSING_SERVICE", "computed angle:  "+currentAngle);
                 currentTime=System.currentTimeMillis();
                 sessionLength=currentTime-sessionStartTime;
@@ -136,7 +142,11 @@ public class ProcessingService {
         for(Long i : periods){
             sum+=i.longValue();
         }
-        Log.d("PROCESSING_SERVICE", "average periods: "+((float)sum)/periods.size()+" [ms]");
+        Log.d("PROCESSING_SERVICE", "average period: "+getAveragePeriod()+
+                                    " [ms], movementCount: "+getMovementCount()+
+                                    ", session length: "+getSessionLength()+" [ms],"+
+                                    " max angle: "+getMaxAngle()+" [deg]"+
+                                    " session start time: " + getSessionStartTime());
     }
     public boolean isProcessing(){
         return isProcessing;
@@ -172,6 +182,22 @@ public class ProcessingService {
      */
     public int getAveragePeriod(){
         return (int)getSessionLength()/getMovementCount();
+    }
+
+    /**
+     * return UTC star time of last session in [ms]
+     * @return long value time in ms
+     */
+    public long getSessionStartTime(){
+        return this.sessionStartTime;
+    }
+
+    /**
+     * returs maximum angle for current session
+     * @return float value maximum angle for session.
+     */
+    public float getMaxAngle(){
+        return this.maxAngle;
     }
 }
 
