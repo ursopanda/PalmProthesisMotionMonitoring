@@ -142,11 +142,15 @@ public class ProcessingService {
         for(Long i : periods){
             sum+=i.longValue();
         }
-        Log.d("PROCESSING_SERVICE", "average period: "+getAveragePeriod()+
-                                    " [ms], movementCount: "+getMovementCount()+
-                                    ", session length: "+getSessionLength()+" [ms],"+
-                                    " max angle: "+getMaxAngle()+" [deg]"+
-                                    " session start time: " + getSessionStartTime());
+        try {
+            Log.d("PROCESSING_SERVICE", "average period: " + getAveragePeriod() +
+                    " [ms], movementCount: " + getMovementCount() +
+                    ", session length: " + getSessionLength() + " [ms]," +
+                    " max angle: " + getMaxAngle() + " [deg]" +
+                    " session start time: " + getSessionStartTime());
+        } catch(ArithmeticException ex){
+
+        }
     }
     public boolean isProcessing(){
         return isProcessing;
