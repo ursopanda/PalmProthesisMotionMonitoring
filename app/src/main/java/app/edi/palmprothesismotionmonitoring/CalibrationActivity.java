@@ -91,8 +91,6 @@ public class CalibrationActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "Calibation finished!", Toast.LENGTH_SHORT).show();
                                 }
                                 });
-
-
                         }
                         Log.d("CALIBRATION", "Sensor data frame added");
                     }} ,0 , 20);
