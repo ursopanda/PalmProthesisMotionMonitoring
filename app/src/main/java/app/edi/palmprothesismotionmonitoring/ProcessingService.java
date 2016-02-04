@@ -189,7 +189,7 @@ public class ProcessingService {
     }
 
     /**
-     * return UTC star time of last session in [ms]
+     * return UTC start time of last session in [ms]
      * @return long value time in ms
      */
     public long getSessionStartTime(){

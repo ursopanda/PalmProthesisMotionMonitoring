@@ -23,13 +23,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // RehabSession table name
     private static final String TABLE_REHAB_SESSION = "rehabSession";
 
-    //Rehabsession table columns
+    // PatientData table name
+    private static final String TABLE_PATIENT_DATA = "patientData";
+
+    // Rehabsession table columns
     private static final String KEY_ID = "id";
     private static final String KEY_START_TIME = "start_time";
     private static final String KEY_END_TIME = "end_time";
     private static final String KEY_MOVEMENT_AMOUNT = "movement_amount";
     private static final String KEY_MOVEMENT_AMPLITUDE = "movement_amplitude";
     private static final String KEY_AVG_FREQUENCY = "avg_frequency";
+    // Foreign Key to relate to PatientData table
+    private static final String KEY_PATIENT_ID = "patient_ID";
+
+    // PatientData table columns
+    private static final String PATIENT_ID = "id";
+//    private static final String
+
+
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

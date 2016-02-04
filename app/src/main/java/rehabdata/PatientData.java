@@ -7,6 +7,10 @@ public class PatientData {
 
     // Personal data
     int _id;
+
+    // Implementing FK to Doctor DB
+//    int _doctorID;
+
     String _name;
     String _surname;
     String _phoneNumber;
@@ -28,6 +32,7 @@ public class PatientData {
     public PatientData(int _id, String _name, String _surname, String _phoneNumber, String _diagnosis,
                        String _definedMovementAmount, String _definedAmplitude, int _definedRehabLength) {
         this._id = _id;
+//        this._doctorID = _doctorID;
         this._name = _name;
         this._surname = _surname;
         this._phoneNumber = _phoneNumber;

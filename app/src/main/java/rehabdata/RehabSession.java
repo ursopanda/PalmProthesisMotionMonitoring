@@ -10,6 +10,7 @@ public class RehabSession {
 
     // private variables
     int _id;
+    int _patientID;
     Timestamp _startTime;
     Timestamp _endTime;
     int _movementAmount;
