@@ -20,6 +20,7 @@ import android.os.Handler;
 import java.util.concurrent.TimeUnit;
 
 import lv.edi.BluetoothLib.BluetoothService;
+import rehabdata.DatabaseHandler;
 
 public class MainActivity extends AppCompatActivity implements ProcessingServiceEventListener{
     private PatientApplication application;
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
     private TextView amplitudeValue, sessionTime, movementAmount;
     private long sessionTimer, timeInMilliSeconds = 0L;
     Handler handler = new Handler();
+
+    // Initialising Database instance
+    DatabaseHandler db = new DatabaseHandler(this);
 
 
     @Override

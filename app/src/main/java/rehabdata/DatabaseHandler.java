@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.edi.palmprothesismotionmonitoring.ProcessingService;
+
 
 /**
  * Created by esyundyukov on 18/01/16.
