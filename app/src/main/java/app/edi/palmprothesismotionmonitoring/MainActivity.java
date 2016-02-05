@@ -64,11 +64,10 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
             application.btService.registerBluetoothEventListener(application);
         }
 
-        if(application.processingService==null){
-            application.processingService = new ProcessingService(application.sensors);
-        }
+//        if(application.processingService==null){
+//            application.processingService = new ProcessingService(application.sensors);
+//        }
 
-        application.processingService.registerProcessingServiceEventListener(this);
 
         // Working with fields about required Rehab Session values
         TextView requiredLength = (TextView) findViewById(R.id.requiredSessionLength);
@@ -180,6 +179,9 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
                 btConnect.setIcon(R.drawable.not);
             }
         });
+        if(application.processingService.isProcessing()){
+            application.processingService.stopProcessing();
+        }
     }
 
     public void btConnecting(){
@@ -198,6 +200,8 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
                 startProcessingButton.setChecked(false);
                 return;
             } else {
+                application.processingService = new ProcessingService(application.sensors, 40, 70, 10000);
+                application.processingService.registerProcessingServiceEventListener(this);
                 application.processingService.startProcessing(20);
 
                 // TODO Starting Timer of Rehabilitation
@@ -250,8 +254,18 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
         final int countf = count;
         runOnUiThread(new Runnable(){
             public void run(){
-                Log.d("MAIN_ACTIVITY", "movement count view "+movementAmount);
+                Log.d("MAIN_ACTIVITY", "movement count view " + movementAmount);
                 movementAmount.setText("" + countf);
+            }
+        });
+    }
+
+    @Override
+    public void onStopProcessing(){
+        runOnUiThread(new Runnable() {
+            public void run () {
+                startProcessingButton.setChecked(false);
+                Toast.makeText(getApplicationContext(), "Processing finished!", Toast.LENGTH_SHORT).show();
             }
         });
     }

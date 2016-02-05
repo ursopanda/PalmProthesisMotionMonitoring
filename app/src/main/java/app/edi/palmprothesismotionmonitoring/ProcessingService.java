@@ -37,6 +37,7 @@ public class ProcessingService {
 
     private long sessionStartTime;       // session start time in [ms] UTC
     private long sessionLength;          // time elapsed since session start
+    private long sessionSetLength=10000;       // how long session mus run in [ms]
     private long previousTime;
     private long currentTime;            // current elapsed time in [ms]
 
@@ -44,17 +45,33 @@ public class ProcessingService {
     private float currentAngle;         // computed angle in degrees
     private Vector<Long> periods;       // periods between movements in milliseconds
     private Filter filterAngle;
+
     Vector<ProcessingServiceEventListener> listeners = new Vector<ProcessingServiceEventListener>();
 
     /**
      *  Constructor specifying lower and upper angle thresholds for movement counting
      *  @param sensors Vector containing Sensor objects on which to perform processing.
-     *  @
+     *  @param lowerThreshold sets lower threshold for angle
+     *  @param upperThreshold sets upper threshold  for angle (reaching this value count movement)
      */
     public ProcessingService(Vector<Sensor> sensors, float lowerThreshold, float upperThreshold){
         this(sensors);
         this.lowerThreshold = lowerThreshold;
         this.upperThreshold = upperThreshold;
+    }
+
+    /**
+     *  Constructor specifying lower and upper angle thresholds for movement counting
+     *  @param sensors Vector containing Sensor objects on which to perform processing.
+     *  @param lowerThreshold sets lower threshold for angle
+     *  @param upperThreshold sets upper threshold  for angle (reaching this value count movement)
+     *  @param sessionLength sets length how long session should run
+     */
+    public ProcessingService(Vector<Sensor> sensors, float lowerThreshold, float upperThreshold, int sessionLength){
+        this(sensors);
+        this.lowerThreshold = lowerThreshold;
+        this.upperThreshold = upperThreshold;
+        this.sessionSetLength = sessionLength;
     }
     /**
      * Constructor specifying allocated Sensor objects to use for processing
@@ -82,6 +99,9 @@ public class ProcessingService {
         sessionStartTime=System.currentTimeMillis();
         previousTime = sessionStartTime;
         movementCounts = 0;
+        for(ProcessingServiceEventListener i : listeners){
+            i.onMovementCount(movementCounts);
+        }
         timer.scheduleAtFixedRate(new TimerTask(){
             public void run() {// fetch data
                 float[] acc0 = sensors.get(0).getAccNorm();
@@ -122,6 +142,9 @@ public class ProcessingService {
                 for(ProcessingServiceEventListener i : listeners){
                     i.onProcessingResult(currentAngle);
                 }
+                if(sessionLength>=sessionSetLength){
+                    stopProcessing();
+                }
             }
                 } ,0 , period);
 
@@ -150,6 +173,10 @@ public class ProcessingService {
                     " session start time: " + getSessionStartTime());
         } catch(ArithmeticException ex){
 
+        }
+
+        for(ProcessingServiceEventListener i: listeners){
+            i.onStopProcessing();
         }
     }
     public boolean isProcessing(){
@@ -211,4 +238,5 @@ public class ProcessingService {
 interface ProcessingServiceEventListener{
     void onProcessingResult(float processingResult);
     void onMovementCount(int movementCount);
+    void onStopProcessing();
 }
