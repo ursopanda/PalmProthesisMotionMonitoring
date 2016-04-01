@@ -29,15 +29,17 @@ public class ProcessingService {
     private Timer timer;
     private final float[] Z ={0, 0, 1};
 
-    private float lowerThreshold=40;       // lower threshold for movement counting
-    private float upperThreshold=70;       // upper threshold for movement counting
-    private int movementCounts=0;
-    private boolean goingUp=true;           // shows if direction of movement (increasing angle)
+    private float lowerThreshold = 40;       // lower threshold for movement counting
+    // TODO: Here is defined flexion angle of the palm prosthesis
+    private float upperThreshold = 70;       // upper threshold for movement counting
+    private int movementCounts = 0;
+    private boolean goingUp = true;           // shows if direction of movement (increasing angle)
 
 
     private long sessionStartTime;       // session start time in [ms] UTC
     private long sessionLength;          // time elapsed since session start
-    private long sessionSetLength=10000;       // how long session mus run in [ms]
+    // TODO: Here is defined sessionTime
+    private long sessionSetLength = 10000;       // how long session mus run in [ms]
     private long previousTime;
     private long currentTime;            // current elapsed time in [ms]
 

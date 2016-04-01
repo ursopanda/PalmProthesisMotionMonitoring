@@ -8,4 +8,6 @@
         android:orderInCategory="100" app:showAsAction="never" />
     <item android:id="@+id/action_calibrate" android:title="@string/action_calibrate"
         android:orderInCategory="101" app:showAsAction="never"></item>
+    <item android:id="@+id/action_parameters" android:title = "Parameters"
+        android:orderInCategory="102" app:showAsAction = "never"></item>
 </menu>

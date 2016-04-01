@@ -153,6 +153,11 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
             startActivity(intent);
         }
 
+        if (id == R.id.action_parameters) {
+            Intent intent = new Intent(this, ParametersActivity.class);
+            startActivity(intent);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -179,10 +184,10 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
                 btConnect.setIcon(R.drawable.not);
             }
         });
-        if(application.processingService.isProcessing()){
-            application.processingService.stopProcessing();
+//        if(application.processingService.isProcessing()){
+//            application.processingService.stopProcessing();
         }
-    }
+//    }
 
     public void btConnecting(){
         runOnUiThread(new Runnable(){
@@ -200,7 +205,8 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
                 startProcessingButton.setChecked(false);
                 return;
             } else {
-                application.processingService = new ProcessingService(application.sensors, 40, 70, 10000);
+                //TODO Take parameters from DB, not hardcoded
+                application.processingService = new ProcessingService(application.sensors, 40, 70, 30000);
                 application.processingService.registerProcessingServiceEventListener(this);
                 application.processingService.startProcessing(20);
 
@@ -266,6 +272,7 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
             public void run () {
                 startProcessingButton.setChecked(false);
                 Toast.makeText(getApplicationContext(), "Processing finished!", Toast.LENGTH_SHORT).show();
+                //TODO Here we push data to DB tables!
             }
         });
     }
