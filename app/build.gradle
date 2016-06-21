@@ -20,7 +20,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile files('../smartwear-processing-lib/libs/EJML-core-0.28.jar')
     compile files('../smartwear-processing-lib/libs/EJML-dense64-0.28.jar')
     compile files('../smartwear-processing-lib/libs/EJML-denseC64-0.28.jar')
@@ -29,9 +29,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':bluetooth-lib')
     compile project(':smartwear-processing-lib')
-
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:design:23.2.1'
     compile 'com.android.support:support-v4:23.2.1'
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+    compile files('/Users/Emil/StudioProjects/PalmProthesisMotionMonitoring3/libs/achartengine-1.1.0.jar')
 }

@@ -1,5 +1,6 @@
 package app.edi.palmprothesismotionmonitoring;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,5 +33,10 @@ public class DisplayStatistics extends AppCompatActivity {
 
         sessionLengthStats.setText(String.valueOf(MainActivity.totalRehabLength));
 
+    }
+
+    public void showLineGraph() {
+        Intent intent = new Intent(this, GraphActivity.class);
+        startActivity(intent);
     }
 }
