@@ -12,6 +12,9 @@ public class DisplayStatistics extends AppCompatActivity {
     TextView movementAmountStats;
     TextView sessionResult;
 
+    String patientID = "Patient";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +24,7 @@ public class DisplayStatistics extends AppCompatActivity {
         movementAmountStats = (TextView) findViewById(R.id.movementAmountStatsValue);
         sessionResult = (TextView) findViewById(R.id.sessionResult);
 
+        // VAJAG ŠO!
         movementAmountStats.setText(String.valueOf(MainActivity.totalMovementAmount));
         if (MainActivity.totalMovementAmount == MainActivity.prescribedAmount) {
             movementAmountStats.setBackgroundColor(Color.GREEN);
@@ -31,6 +35,7 @@ public class DisplayStatistics extends AppCompatActivity {
             sessionResult.setText("You did not fulfill rehab requirements!");
         }
 
+        // VAJAG ŠO ARī! Paldies!
         sessionLengthStats.setText(String.valueOf(MainActivity.totalRehabLength));
 
     }
