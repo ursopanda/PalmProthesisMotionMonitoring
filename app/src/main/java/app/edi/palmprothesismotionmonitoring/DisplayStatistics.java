@@ -1,10 +1,11 @@
 package app.edi.palmprothesismotionmonitoring;
 
-import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
+
+import com.firebase.client.Firebase;
 
 public class DisplayStatistics extends AppCompatActivity {
 
@@ -17,6 +18,11 @@ public class DisplayStatistics extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //Initializing Firebase
+        Firebase.setAndroidContext(this);
+        Firebase statisticsFirebase = new Firebase("https://palm-prothesis.firebaseio.com/");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_statistics);
 
@@ -40,8 +46,8 @@ public class DisplayStatistics extends AppCompatActivity {
 
     }
 
-    public void showLineGraph() {
-        Intent intent = new Intent(this, GraphActivity.class);
-        startActivity(intent);
-    }
+//    public void showLineGraph() {
+//        Intent intent = new Intent(this, GraphActivity.class);
+//        startActivity(intent);
+//    }
 }
