@@ -1,0 +1,18 @@
+Index: app/src/main/java/app/edi/palmprothesismotionmonitoring/DisplayStatistics.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/app/edi/palmprothesismotionmonitoring/DisplayStatistics.java	(revision 9f47c51d4426c9578fd85f05ea8c3817e41d1ad8)
++++ app/src/main/java/app/edi/palmprothesismotionmonitoring/DisplayStatistics.java	(revision )
+@@ -34,10 +34,8 @@
+             movementAmountStats.setBackgroundColor(Color.RED);
+             sessionResult.setText("You did not fulfill rehab requirements!");
+         }
+-
+         // VAJAG ŠO ARī! Paldies!
+         sessionLengthStats.setText(String.valueOf(MainActivity.totalRehabLength));
+-
+     }
+ 
+     public void showLineGraph() {
