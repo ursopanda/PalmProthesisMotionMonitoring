@@ -46,5 +46,5 @@ dependencies {
     compile 'com.android.support:design:23.2.1'
     compile 'com.android.support:support-v4:23.2.1'
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
-//    compile files('/Users/Emil/StudioProjects/PalmProthesisMotionMonitoring3/libs/achartengine-1.1.0.jar')
+    //    compile files('/Users/Emil/StudioProjects/PalmProthesisMotionMonitoring3/libs/achartengine-1.1.0.jar')
 }

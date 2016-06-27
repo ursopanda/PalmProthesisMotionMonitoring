@@ -13,7 +13,7 @@ public class DisplayStatistics extends AppCompatActivity {
     TextView movementAmountStats;
     TextView sessionResult;
     String isOkay;
-    String patientID;
+    String patientID = MainActivity.patientSurname;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -27,6 +27,11 @@ public class DisplayStatistics extends AppCompatActivity {
         sessionResult = (TextView) findViewById(R.id.sessionResult);
 
         // VAJAG ŠO!
+
+        Firebase surnameFirebase = new Firebase("https://palm-prothesis.firebaseio.com/patients/"
+                + patientID
+                + "/surname");
+        surnameFirebase.setValue(MainActivity.patientSurname);
 
         movementAmountStats.setText(String.valueOf(MainActivity.totalMovementAmount));
         Firebase movementFirebase = new Firebase("https://palm-prothesis.firebaseio.com/patients/"

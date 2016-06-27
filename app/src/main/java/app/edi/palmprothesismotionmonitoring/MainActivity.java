@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
     public static int prescribedFlexion = 70;
     public static long prescribedLength = 10000L;
     public static int prescribedAmount = 10;
+    public static String patientSurname;
 
     // Store data after session
     public static int totalMovementAmount = 0;
@@ -332,6 +333,12 @@ public class MainActivity extends AppCompatActivity implements ProcessingService
         String setPrescribedMovementAmountValueText = prescribedMovementAmountValueTextView.getText().toString();
         if (isInteger(setPrescribedMovementAmountValueText))
             prescribedAmount = Integer.parseInt(setPrescribedMovementAmountValueText);
+    }
+
+    public void setPatientSurname(View v) {
+        EditText patientSurnameTextView = (EditText) findViewById(R.id.patientSurname);
+        patientSurname = patientSurnameTextView.getText().toString();
+
     }
 
     public static boolean isInteger(String s) {
