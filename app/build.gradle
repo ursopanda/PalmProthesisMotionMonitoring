@@ -17,6 +17,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/NOTICE'
+    }
+
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
 }
 
 dependencies {
@@ -34,5 +46,5 @@ dependencies {
     compile 'com.android.support:design:23.2.1'
     compile 'com.android.support:support-v4:23.2.1'
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
-    compile files('/Users/Emil/StudioProjects/PalmProthesisMotionMonitoring3/libs/achartengine-1.1.0.jar')
+//    compile files('/Users/Emil/StudioProjects/PalmProthesisMotionMonitoring3/libs/achartengine-1.1.0.jar')
 }
